@@ -23,6 +23,7 @@ const theme = createTheme({
 
 
 function App() {
+
   const data=useSelector((state)=>state.weather.weatherData)
   const load=useSelector((state)=>state.weather.load)
   const dispatch=useDispatch()
@@ -30,13 +31,45 @@ function App() {
   const { t, i18n } = useTranslation();
  const [lang, setLang] = useState("en")
   const [time, setTime] = useState("")
- useEffect(() => {
-    // setLoad(true)
-    setTime(moment().format('dddd Do MMMM YYYY'))
-    dispatch(fetchWeatherApi(lang))
 
-  }, [lang])
+useEffect(() => {
+  setTime(moment().format('dddd Do MMMM YYYY'));
 
+  const defaultLat = 30.0445;
+  const defaultLon = 31.2388;
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        dispatch(
+          fetchWeatherApi({
+            lang,
+            lat: pos.coords.latitude,
+            lon: pos.coords.longitude,
+          })
+        );
+      },
+      () => {
+        dispatch(
+          fetchWeatherApi({
+            lang,
+            lat: defaultLat,
+            lon: defaultLon,
+          })
+        );
+      }
+    );
+  } else {
+    dispatch(
+      fetchWeatherApi({
+        lang,
+        lat: defaultLat,
+        lon: defaultLon,
+      })
+    );
+  }
+
+}, [lang, dispatch]);
 
   const handleLanguageChange = () => {
     if (lang == "ar") {
@@ -73,7 +106,7 @@ function App() {
               {/* Temp && Description */}
               <div>
                 <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
-                  <Typography variant='h1'>{Math.round(data.temp)}</Typography>
+                <Typography variant='h1'> {data.temp ? Math.round(data.temp) : "--"} </Typography>
                   {/* Image From API */}
                   <img src={`https://openweathermap.org/img/wn/${data.icon}@2x.png`} alt="img" />
                   {/*== Image From API ==*/}
@@ -100,6 +133,7 @@ function App() {
             </Button>
           </div>
         </div>
+
       </Container>
 
     </ThemeProvider>
