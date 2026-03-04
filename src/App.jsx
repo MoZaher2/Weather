@@ -35,8 +35,8 @@ function App() {
 useEffect(() => {
   setTime(moment().format('dddd Do MMMM YYYY'));
 
-  const defaultLat = 30.0445;
-  const defaultLon = 31.2388;
+  const defaultLat = 28.1;
+  const defaultLon = 30.7;
 
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
