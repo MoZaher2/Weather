@@ -1,0 +1,26 @@
+/* Custom Font */
+* {
+  font-family: IBM;
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #0052d0 !important;
+}
+
+.cloudIcon{
+  font-size: 200px !important;
+}
+
+@media (max-width:500px) {
+  .cloudIcon{
+    font-size: 100px !important;
+  }
+}
+
+@font-face {
+  font-family: IBM;
+  src: url("public/Fonts/IBM-Font/IBMPlexSansArabic-Medium.ttf");
+}
